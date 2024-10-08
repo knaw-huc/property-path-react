@@ -1,0 +1,179 @@
+:root {
+    --property-path-border: rgba(0, 0, 0, 0.09);
+    --property-path-background: #f2f2f2;
+    --property-path-separator: #999999;
+}
+
+.property {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-left: 3em;
+    gap: 0.5em;
+
+    .property-start {
+        margin-left: -3.5em;
+    }
+
+    .property-pill {
+        font: inherit;
+        padding: 0 0.5em;
+        border: 1px solid var(--property-path-border);
+        border-radius: 0.3em;
+        color: inherit;
+        background-color: inherit;
+    }
+
+    .property-resource {
+        text-transform: uppercase;
+        background-color: var(--property-path-background);
+    }
+
+    .property-prop {
+        text-transform: uppercase;
+    }
+
+    .property-can-select {
+        cursor: pointer;
+    }
+
+    .property-select {
+        font-style: italic;
+        cursor: pointer;
+        height: initial;
+    }
+
+    .property-sep {
+        color: var(--property-path-separator);
+    }
+
+    .property-button {
+        text-transform: uppercase;
+        background-color: var(--property-path-background);
+        cursor: pointer;
+        height: initial;
+    }
+
+    .property-values {
+        display: inline-flex;
+        flex-wrap: wrap;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: inline;
+            margin: 0;
+            padding: 0;
+
+            &:not(:first-child):before {
+                content: "•";
+                margin: 0.5em;
+                color: var(--property-path-separator);
+            }
+        }
+    }
+}
+
+.property-popover {
+    display: flex;
+    flex-direction: column;
+    font: inherit;
+    min-width: 30em;
+    max-height: 20em;
+    background-color: white;
+    border: 1px solid var(--property-path-border);
+    border-radius: 0.3em;
+    box-shadow: hsl(206 22% 7% / 35%) 0 10px 38px -10px, hsl(206 22% 7% / 20%) 0 10px 20px -15px;
+    animation-duration: 400ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+    z-index: 60;
+
+    &[data-state='open'][data-side='top'] {
+        animation-name: slideDownAndFade;
+    }
+
+    &[data-state='open'][data-side='right'] {
+        animation-name: slideLeftAndFade;
+    }
+
+    &[data-state='open'][data-side='bottom'] {
+        animation-name: slideUpAndFade;
+    }
+
+    &[data-state='open'][data-side='left'] {
+        animation-name: slideRightAndFade;
+    }
+
+    input {
+        width: unset;
+        margin: 0.5em;
+        border: 1px solid var(--property-path-border);
+    }
+
+    .property-popover-arrow {
+        fill: white;
+    }
+
+    .property-popover-options {
+        overflow-y: auto;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+
+            &:nth-child(odd) {
+                background-color: var(--property-path-background);
+            }
+        }
+    }
+
+    @keyframes slideUpAndFade {
+        from {
+            opacity: 0;
+            transform: translateY(2px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideRightAndFade {
+        from {
+            opacity: 0;
+            transform: translateX(-2px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideDownAndFade {
+        from {
+            opacity: 0;
+            transform: translateY(-2px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideLeftAndFade {
+        from {
+            opacity: 0;
+            transform: translateX(2px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+}
