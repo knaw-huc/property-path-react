@@ -1,24 +1,19 @@
-import React, {ReactNode} from 'react';
+import React, {ReactNode, useState} from 'react';
 import SelectPopover from './SelectPopover';
 
 interface PropertyProps<C, P> {
     collection: C,
     property: P | null,
     propIdx: number,
+    propertySelectOpen: boolean,
     getPropertyLabel?: (collection: C, property: P) => string,
     getPropertyOptions: (collection: C, searchValue: string) => P[],
     getPropertyOption?: (collection: C, property: P) => ReactNode,
+    onPropertySelectOpenChange: (open: boolean) => void,
     setPropertyInPath: (idx: number, value: C | P) => void,
     resetPropertyPath: (idx: number) => void,
     readOnly?: boolean,
     isLast: boolean
-}
-
-interface PropertySelectProps<P> {
-    index: number,
-    getPropertyOptions: (searchValue: string) => P[],
-    getPropertyOption?: (property: P) => ReactNode,
-    setPropertyInPath: (idx: number, value: P) => void
 }
 
 export default function Property<C, P>(
@@ -26,9 +21,11 @@ export default function Property<C, P>(
         collection,
         property,
         propIdx,
+        propertySelectOpen,
         getPropertyLabel,
         getPropertyOptions,
         getPropertyOption,
+        onPropertySelectOpenChange,
         setPropertyInPath,
         resetPropertyPath,
         readOnly,
@@ -41,10 +38,10 @@ export default function Property<C, P>(
     return (
         <>
             {property === null && !readOnly &&
-                <PropertySelect index={propIdx}
-                                getPropertyOptions={searchValue => getPropertyOptions(collection, searchValue)}
-                                getPropertyOption={getPropertyOption && ((property: P) => getPropertyOption(collection, property))}
-                                setPropertyInPath={setPropertyInPath}/>}
+                <SelectPopover index={propIdx} open={propertySelectOpen} onOpenChange={onPropertySelectOpenChange}
+                               getOptions={searchValue => getPropertyOptions(collection, searchValue)}
+                               getOption={getPropertyOption && ((property: P) => getPropertyOption(collection, property))}
+                               setPropertyInPath={setPropertyInPath}/>}
 
             {property !== null &&
                 <div className={className}
@@ -53,14 +50,5 @@ export default function Property<C, P>(
                 </div>
             }
         </>
-    );
-}
-
-function PropertySelect<P>({index, getPropertyOptions, getPropertyOption, setPropertyInPath}: PropertySelectProps<P>) {
-    return (
-        <SelectPopover index={index}
-                       getOptions={getPropertyOptions}
-                       getOption={getPropertyOption}
-                       setPropertyInPath={setPropertyInPath}/>
     );
 }

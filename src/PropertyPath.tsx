@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {ReactNode, useState} from 'react';
 import PropertyInPath from './PropertyInPath';
 import PropertyCollapse from './PropertyCollapse';
 import PropertyPathInfo from './PropertyPathInfo';
@@ -27,6 +27,19 @@ interface PropertyPathProps<C, P> {
     onChange?: (newProperty: (C | P | null)[], prevProperty: (C | P | null)[]) => void;
 }
 
+function getId<C, P>(propertyPath: (C | P | null)[]) {
+    const str = JSON.stringify(propertyPath);
+
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+    }
+
+    return 'prop' + hash;
+}
+
 export default function PropertyPath<C, P>(
     {
         propertyPath,
@@ -49,19 +62,6 @@ export default function PropertyPath<C, P>(
         buttons = [],
         onChange
     }: PropertyPathProps<C, P>) {
-    function getId() {
-        const str = JSON.stringify(propertyPath);
-
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            const char = str.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
-        }
-
-        return 'prop' + hash;
-    }
-
     function setPropertyInPath(idx: number, value: C | P) {
         if (onChange) {
             const newPropertyPath = [...propertyPath];
@@ -82,6 +82,7 @@ export default function PropertyPath<C, P>(
             }
 
             onChange(newPropertyPath, propertyPath);
+            setSelectPopoverOpen(newPropertyPath.length > (idx + 1) ? idx + 1 : null);
         }
     }
 
@@ -94,6 +95,8 @@ export default function PropertyPath<C, P>(
         }
     }
 
+    const [selectPopoverOpen, setSelectPopoverOpen] = useState<number | null>(null);
+    const id = allowCollapse ? getId(propertyPath) : '';
     const properties = new Array(Math.floor((propertyPath.length + 1) / 2))
         .fill(null)
         .map((_, idx) => {
@@ -117,7 +120,7 @@ export default function PropertyPath<C, P>(
         });
 
     return (
-        <div className={'property' + (allowCollapse ? ` ${getId()}` : '') + (` ${className}` || '')}>
+        <div className={'property' + (allowCollapse ? ` ${id}` : '') + (` ${className}` || '')}>
             <div className="property-start"/>
 
             {infoLabels && <PropertyPathInfo infoLabels={infoLabels}
@@ -133,14 +136,18 @@ export default function PropertyPath<C, P>(
                                 prevProperty={prevProperty}
                                 stopProperty={stopProperty}
                                 collectionIdx={collectionIdx}
+                                collectionSelectOpen={selectPopoverOpen === collectionIdx}
                                 getPropertyLabel={getPropertyLabel}
                                 getCollectionLabel={getCollectionLabel}
                                 getCollectionOptions={getCollectionOptions}
                                 getCollectionOption={getCollectionOption}
+                                onCollectionSelectOpenChange={(open: boolean) => setSelectPopoverOpen(open ? collectionIdx : null)}
                                 propIdx={propIdx}
+                                propertySelectOpen={selectPopoverOpen === propIdx}
                                 getPropertyOptions={getPropertyOptions}
                                 getPropertyOption={getPropertyOption}
                                 setPropertyInPath={setPropertyInPath}
+                                onPropertySelectOpenChange={(open: boolean) => setSelectPopoverOpen(open ? propIdx : null)}
                                 resetPropertyPath={resetPropertyPath}
                                 readOnly={readOnly}
                                 isLast={idx === (properties.length - 1)}/>
@@ -149,7 +156,7 @@ export default function PropertyPath<C, P>(
             {!infoLabels && (!readOnly && buttons) &&
                 <PropertyActions buttons={buttons}/>}
 
-            {allowCollapse && <PropertyCollapse id={getId()}
+            {allowCollapse && <PropertyCollapse id={id}
                                                 startCollapsed={startCollapsed}
                                                 doCollapseButtonOverride={doCollapseButtonOverride}
                                                 undoCollapseButtonOverride={undoCollapseButtonOverride}/>}

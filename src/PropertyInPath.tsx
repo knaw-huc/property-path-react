@@ -11,13 +11,17 @@ interface PropertyInPathProps<C, P> {
     prevProperty: P | null,
     stopProperty?: P,
     collectionIdx: number | null,
+    collectionSelectOpen: boolean,
     getCollectionLabel?: (collection: C) => string,
     getCollectionOptions: (collection: C, property: P, searchValue: string) => C[],
     getCollectionOption?: (collection: C) => ReactNode,
+    onCollectionSelectOpenChange: (open: boolean) => void,
     propIdx: number,
+    propertySelectOpen: boolean,
     getPropertyLabel?: (collection: C, property: P) => string,
     getPropertyOptions: (collection: C, searchValue: string) => P[],
     getPropertyOption?: (collection: C, property: P) => ReactNode,
+    onPropertySelectOpenChange: (open: boolean) => void,
     setPropertyInPath: (idx: number, value: C | P) => void,
     resetPropertyPath: (idx: number) => void,
     readOnly?: boolean,
@@ -33,13 +37,17 @@ export default function PropertyInPath<C, P>(
         prevProperty,
         stopProperty,
         collectionIdx,
+        collectionSelectOpen,
         getCollectionLabel,
         getCollectionOptions,
         getCollectionOption,
+        onCollectionSelectOpenChange,
         propIdx,
+        propertySelectOpen,
         getPropertyLabel,
         getPropertyOptions,
         getPropertyOption,
+        onPropertySelectOpenChange,
         setPropertyInPath,
         resetPropertyPath,
         readOnly,
@@ -50,31 +58,35 @@ export default function PropertyInPath<C, P>(
     return (
         <>
             {(hasInfoLabels || collectionIdx !== null) && <Seperator/>}
-            {collectionIdx !== null && <Collection
-                collection={collection}
-                collectionIdx={collectionIdx}
-                prevCollection={prevCollection}
-                prevProperty={prevProperty}
-                getCollectionLabel={getCollectionLabel}
-                getCollectionOptions={getCollectionOptions}
-                getCollectionOption={getCollectionOption}
-                setPropertyInPath={setPropertyInPath}
-                resetPropertyPath={resetPropertyPath}
-                readOnly={readOnly}
-                isLast={isLast && !hasProperty}/>}
+                {collectionIdx !== null && <Collection
+                    collection={collection}
+                    collectionIdx={collectionIdx}
+                    collectionSelectOpen={collectionSelectOpen}
+                    prevCollection={prevCollection}
+                    prevProperty={prevProperty}
+                    getCollectionLabel={getCollectionLabel}
+                    getCollectionOptions={getCollectionOptions}
+                    getCollectionOption={getCollectionOption}
+                    onCollectionSelectOpenChange={onCollectionSelectOpenChange}
+                    setPropertyInPath={setPropertyInPath}
+                    resetPropertyPath={resetPropertyPath}
+                    readOnly={readOnly}
+                    isLast={isLast && !hasProperty}/>}
 
-            {collectionIdx !== null && collection && <Seperator/>}
-            {hasProperty && <Property
-                collection={collection}
-                property={property}
-                propIdx={propIdx}
-                getPropertyLabel={getPropertyLabel}
-                getPropertyOptions={getPropertyOptions}
-                getPropertyOption={getPropertyOption}
-                setPropertyInPath={setPropertyInPath}
-                resetPropertyPath={resetPropertyPath}
-                readOnly={readOnly}
-                isLast={isLast}/>}
+                {collectionIdx !== null && collection && <Seperator/>}
+                {hasProperty && <Property
+                    collection={collection}
+                    property={property}
+                    propIdx={propIdx}
+                    propertySelectOpen={propertySelectOpen}
+                    getPropertyLabel={getPropertyLabel}
+                    getPropertyOptions={getPropertyOptions}
+                    getPropertyOption={getPropertyOption}
+                    onPropertySelectOpenChange={onPropertySelectOpenChange}
+                    setPropertyInPath={setPropertyInPath}
+                    resetPropertyPath={resetPropertyPath}
+                    readOnly={readOnly}
+                    isLast={isLast}/>}
         </>
     );
 }

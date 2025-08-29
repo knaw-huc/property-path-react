@@ -2,6 +2,8 @@
 
 A React input component for defining a property path. Requires React 19.
 
+![example.png](example.png)
+
 Install the package using:
 `npm install @knaw-huc/property-path-react`
 

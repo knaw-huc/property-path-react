@@ -14,7 +14,7 @@ function App() {
 
     function getCollectionsFor(_collection: string, _property: string, searchValue: string) {
         const s = searchValue.toLowerCase();
-        return ['__value__', ...collections.filter(collection => collection.toLowerCase().indexOf(s) > -1)];
+        return [...collections.filter(collection => collection.toLowerCase().indexOf(s) > -1), '__value__'];
     }
 
     function getPropertiesFor(_collection: string, searchValue: string) {
