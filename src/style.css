@@ -11,7 +11,12 @@
     padding-left: 3em;
     gap: 0.5em;
 
-    .property-start {
+    .property-collapsed:not(.property-last) {
+        display: none;
+    }
+
+    > :first-child:not(.property-collapsed),
+    > .property-last.property-collapsed {
         margin-left: -3.5em;
     }
 

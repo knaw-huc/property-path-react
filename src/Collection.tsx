@@ -7,7 +7,7 @@ interface CollectionProps<C, P> {
     collectionSelectOpen: boolean,
     prevCollection: C,
     prevProperty: P | null,
-    getCollectionLabel?: (collection: C) => string,
+    getCollectionLabel?: (collection: C) => ReactNode,
     getCollectionOptions: (collection: C, property: P, searchValue: string) => C[],
     getCollectionOption?: (collection: C) => ReactNode,
     onCollectionSelectOpenChange: (open: boolean) => void,

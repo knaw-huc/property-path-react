@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react';
 import {PropertyActions} from './misc';
 
 export default function PropertyPathInfo({infoLabels, readOnly, buttons}: {
-    infoLabels?: string[],
+    infoLabels?: ReactNode[],
     readOnly?: boolean,
     buttons: [ReactNode, string, () => void][];
 }) {

@@ -9,12 +9,12 @@ interface PropertyPathProps<C, P> {
     propertyPath: (C | P | null)[];
     startCollection: C;
     stopProperty?: P;
-    infoLabels?: string[];
-    values?: string[];
+    infoLabels?: ReactNode[];
+    values?: ReactNode[];
     getCollectionOptions: (collection: C, property: P, searchValue: string) => C[];
     getPropertyOptions: (collection: C, searchValue: string) => P[];
-    getCollectionLabel?: (collection: C) => string;
-    getPropertyLabel?: (collection: C, property: P) => string;
+    getCollectionLabel?: (collection: C) => ReactNode;
+    getPropertyLabel?: (collection: C, property: P) => ReactNode;
     getCollectionOption?: (collection: C) => ReactNode;
     getPropertyOption?: (collection: C, property: P) => ReactNode;
     className?: string;
@@ -120,9 +120,7 @@ export default function PropertyPath<C, P>(
         });
 
     return (
-        <div className={'property' + (allowCollapse ? ` ${id}` : '') + (` ${className}` || '')}>
-            <div className="property-start"/>
-
+        <div className={'property' + (allowCollapse ? ` ${id}` : '') + (className ? ` ${className}` : '')}>
             {infoLabels && <PropertyPathInfo infoLabels={infoLabels}
                                              readOnly={readOnly}
                                              buttons={buttons}/>}

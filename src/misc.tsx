@@ -22,11 +22,11 @@ export function PropertyActions({buttons}: {
     );
 }
 
-export function PropertyValues({values}: { values: string[] }) {
+export function PropertyValues({values}: { values: ReactNode[] }) {
     return (
         <ul className="property-values">
-            {values.map(value =>
-                <li key={value}>{value}</li>)}
+            {values.map((value, idx) =>
+                <li key={(typeof value === 'string') ? value : idx}>{value}</li>)}
         </ul>
     );
 }

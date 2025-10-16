@@ -17,15 +17,11 @@ export default function PropertyCollapse({id, startCollapsed, doCollapseButtonOv
         hideRef.current!.style.display = hide ? 'none' : '';
         showRef.current!.style.display = !hide ? 'none' : '';
 
-        const selectors = [
-            `.${id} .property-resource`,
-            `.${id} .property-sep`,
-            `.${id} .property-prop:not(.property-last)`,
-        ];
+        const selectors = ['.property-resource', '.property-sep', '.property-prop'].map(cls => `.${id} ${cls}`);
 
         const elements = document.querySelectorAll(selectors.join(',')) as NodeListOf<HTMLElement>;
         for (const el of elements)
-            el.style.display = hide ? 'none' : '';
+            hide ? el.classList.add('property-collapsed') : el.classList.remove('property-collapsed');
     }
 
     return (

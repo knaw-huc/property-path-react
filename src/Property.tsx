@@ -6,7 +6,7 @@ interface PropertyProps<C, P> {
     property: P | null,
     propIdx: number,
     propertySelectOpen: boolean,
-    getPropertyLabel?: (collection: C, property: P) => string,
+    getPropertyLabel?: (collection: C, property: P) => ReactNode,
     getPropertyOptions: (collection: C, searchValue: string) => P[],
     getPropertyOption?: (collection: C, property: P) => ReactNode,
     onPropertySelectOpenChange: (open: boolean) => void,
