@@ -17,7 +17,7 @@
 
     > :first-child:not(.property-collapsed),
     > .property-last.property-collapsed {
-        margin-left: -3.5em;
+        margin-left: -3em;
     }
 
     .property-pill {
